@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>In Loving Memory of Bodhi 🐾</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-serene">
+  <div class="header">
+    <h1>In Loving Memory of Bodhi 🐾</h1>
+    <h2>18/12/24</h2>
+    <button id="themeToggle">🌗 Toggle Theme</button>
+    <button id="muteToggle">🔊 Mute/Unmute Music</button>
+    <button id="fireworksButton">🎇 Launch Fireworks</button>
+    <button id="balloonButton">🎈 Release Balloons</button>
+    <button id="confettiButton">🎊 Throw Confetti</button>
+    <button id="lanternButton">🏮 Light Lanterns</button>
+  </div>
+
+  <div class="centerpiece">
+    <img src="assets/bodhi.png" alt="Bodhi" class="bodhi-img" onclick="angelWings()">
+  </div>
+
+  <div id="candles">
+    <h3>Light a Candle 🕯️</h3>
+    <input id="candleName" placeholder="Your name">
+    <button onclick="lightCandle()">🕯️ Light Candle</button>
+    <div id="candleArea"></div>
+  </div>
+
+  <div id="gifts">
+    <h3>Leave a Gift 🎁 (Drag onto page)</h3>
+    <button onclick="leaveGift('🌹')">🌹 Rose</button>
+    <button onclick="leaveGift('🦴')">🦴 Bone</button>
+    <button onclick="leaveGift('❤️')">❤️ Heart</button>
+  </div>
+
+  <div id="guestbook">
+    <h3>Guestbook 📖</h3>
+    <textarea id="messageInput" placeholder="Leave your message..."></textarea>
+    <button onclick="addMessage()">Submit</button>
+    <ul id="messages"></ul>
+  </div>
+
+  <div id="music">
+    <iframe id="musicFrame" width="0" height="0"
+      src="https://www.youtube.com/embed/gPYODbvQgD4?autoplay=1&loop=1&playlist=gPYODbvQgD4"
+      frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  </div>
+
+  <canvas id="fireworksCanvas"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>
