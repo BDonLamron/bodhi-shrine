@@ -49,3 +49,12 @@ function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);fw.forEach(f=>{
 window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
 function angelWings(){const w=document.createElement('div');w.className='angel-wings';w.innerHTML='🪽🪽';
 document.body.appendChild(w);setTimeout(()=>{w.remove();},6000);}
+
+function updateVisitorCount(){let c=Number(localStorage.getItem('visitCount')||0)+1;localStorage.setItem('visitCount',c);document.getElementById('visitorCount').textContent='You are visitor #'+c;}
+updateVisitorCount();
+
+document.getElementById('shareButton').addEventListener('click',async()=>{
+  const data={title:'Bodhi Memorial Shrine',text:'Remembering Bodhi 🐾',url:window.location.href};
+  if(navigator.share){try{await navigator.share(data);}catch(e){console.error(e);}}
+  else{navigator.clipboard.writeText(data.url).then(()=>alert('Link copied to clipboard!'));}
+});

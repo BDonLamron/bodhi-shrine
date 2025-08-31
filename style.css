@@ -23,3 +23,12 @@ body {
 .angel-wings{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:8em;
   opacity:0;animation:wingFade 6s ease-in-out;}
 @keyframes wingFade { 0%{opacity:0;}20%{opacity:1;}80%{opacity:1;}100%{opacity:0;} }
+
+#visitorCount{margin:10px;font-weight:bold;}
+#share{margin:20px auto;}
+#share button{padding:10px 20px;font-size:1em;cursor:pointer;}
+
+@media (max-width:600px){
+  .bodhi-img{width:80%;}
+  #candles,#gifts,#guestbook{width:90%;}
+}

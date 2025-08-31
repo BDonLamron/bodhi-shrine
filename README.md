@@ -11,6 +11,8 @@ This is the interactive tribute site for Bodhi.
 - Fireworks 🎇
 - Theme toggle 🌗 (Serene/Emo)
 - Music autoplay 🎶 (YouTube embed)
+- Visitor counter and shareable link
+- Mobile-friendly layout
 
 ## How to Deploy on GitHub Pages
 1. Create a public repo on GitHub (e.g., `bodhi-shrine`).
