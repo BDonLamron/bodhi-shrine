@@ -1,60 +1,316 @@
-function randomPosition(max){return Math.floor(Math.random()*max);}
-function createHeart(){const e=document.createElement('div');e.className='heart';
-e.style.left=randomPosition(window.innerWidth)+'px';e.innerHTML=Math.random()>0.5?'💖':'🌹';
-document.body.appendChild(e);setTimeout(()=>{e.remove();},10000);}setInterval(createHeart,400);
-document.getElementById('balloonButton').addEventListener('click',()=>{
-  const b=document.createElement('div');b.className='balloon';b.style.left=randomPosition(window.innerWidth)+'px';
-  b.innerHTML='🎈';b.style.top='100%';b.style.animation='fall 10s linear infinite reverse';document.body.appendChild(b);
-  setTimeout(()=>{b.remove();},10000);});
-document.getElementById('confettiButton').addEventListener('click',()=>{
-  for(let i=0;i<30;i++){const c=document.createElement('div');c.className='confetti';c.style.left=randomPosition(window.innerWidth)+'px';
-  c.innerHTML='🎊';document.body.appendChild(c);setTimeout(()=>{c.remove();},5000);} });
-document.getElementById('lanternButton').addEventListener('click',()=>{
-  for(let i=0;i<5;i++){const l=document.createElement('div');l.className='lantern';l.style.left=randomPosition(window.innerWidth)+'px';
-  l.innerHTML='🏮';l.style.top='100%';l.style.animation='fall 20s linear infinite reverse';document.body.appendChild(l);
-  setTimeout(()=>{l.remove();},20000);} });
-function lightCandle(){const n=document.getElementById('candleName').value||"Anonymous";
-const area=document.getElementById('candleArea');const c=document.createElement('div');c.className='candle';
-c.innerHTML='🕯️ '+n;area.appendChild(c);const candles=JSON.parse(localStorage.getItem('candles')||'[]');
-candles.push(n);localStorage.setItem('candles',JSON.stringify(candles));}
-function loadCandles(){const candles=JSON.parse(localStorage.getItem('candles')||'[]');
-const area=document.getElementById('candleArea');candles.forEach(n=>{const c=document.createElement('div');
-c.className='candle';c.innerHTML='🕯️ '+n;area.appendChild(c);});}loadCandles();
-function leaveGift(i){const g=document.createElement('span');g.className='gift';g.innerHTML=i;
-g.style.position='absolute';g.style.left=randomPosition(window.innerWidth-50)+'px';
-g.style.top=randomPosition(window.innerHeight-50)+'px';document.body.appendChild(g);
-const gifts=JSON.parse(localStorage.getItem('gifts')||'[]');gifts.push({icon:i,x:g.style.left,y:g.style.top});
-localStorage.setItem('gifts',JSON.stringify(gifts));}
-function loadGifts(){const gifts=JSON.parse(localStorage.getItem('gifts')||'[]');
-gifts.forEach(o=>{const g=document.createElement('span');g.className='gift';g.innerHTML=o.icon;g.style.position='absolute';
-g.style.left=o.x;g.style.top=o.y;document.body.appendChild(g);});}loadGifts();
-function addMessage(){const i=document.getElementById('messageInput');const m=i.value.trim();
-if(m){const msgs=JSON.parse(localStorage.getItem('messages')||'[]');msgs.push(m);
-localStorage.setItem('messages',JSON.stringify(msgs));displayMessages();i.value='';}}
-function displayMessages(){const msgs=JSON.parse(localStorage.getItem('messages')||'[]');const ul=document.getElementById('messages');
-ul.innerHTML='';msgs.forEach(m=>{const li=document.createElement('li');li.textContent=m;ul.appendChild(li);});}displayMessages();
-document.getElementById('themeToggle').addEventListener('click',()=>{
-document.body.classList.toggle('theme-emo');document.body.classList.toggle('theme-serene');});
-document.getElementById('muteToggle').addEventListener('click',()=>{const f=document.getElementById('musicFrame');
-f.src=f.src.includes('mute=1')?f.src.replace('mute=1','mute=0'):f.src+'&mute=1';});
-const canvas=document.getElementById('fireworksCanvas');const ctx=canvas.getContext('2d');
-canvas.width=window.innerWidth;canvas.height=window.innerHeight;
-class Firework{constructor(x,y,c){this.x=x;this.y=y;this.c=c;this.p=[];for(let i=0;i<100;i++){this.p.push({x:x,y:y,
-a:Math.random()*2*Math.PI,s:Math.random()*5+2,r:2,l:100});}}update(){this.p.forEach(p=>{p.x+=Math.cos(p.a)*p.s;
-p.y+=Math.sin(p.a)*p.s;p.l-=2;});this.p=this.p.filter(p=>p.l>0);}draw(){this.p.forEach(p=>{ctx.beginPath();
-ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=this.c[Math.floor(Math.random()*this.c.length)];ctx.fill();});}}
-let fw=[];function launchFirework(x,y){const c=['#ff66ff','#ff3399','#ffcc00','#00ccff','#ffffff'];fw.push(new Firework(x,y,c));}
-document.getElementById('fireworksButton').addEventListener('click',()=>{launchFirework(randomPosition(window.innerWidth),randomPosition(window.innerHeight/2));});
-function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);fw.forEach(f=>{f.update();f.draw(ctx);});fw=fw.filter(f=>f.p.length>0);requestAnimationFrame(animate);}animate();
-window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
-function angelWings(){const w=document.createElement('div');w.className='angel-wings';w.innerHTML='🪽🪽';
-document.body.appendChild(w);setTimeout(()=>{w.remove();},6000);}
+const products = [
+  {
+    name: "Signature Glacier Block",
+    desc: 'Crystal-clear, slow-tempered cubes cut to a perfect 2.25".',
+    price: "$28",
+    tag: "Limited",
+    color: "linear-gradient(135deg, #7ee8fa, #80ffea)",
+  },
+  {
+    name: "Aurora Sphere Set",
+    desc: "Spheres infused with aurora shimmer for glass-forward pours.",
+    price: "$32",
+    tag: "Glow",
+    color: "linear-gradient(135deg, #9b8cff, #7ee8fa)",
+  },
+  {
+    name: "Obsidian Fracture",
+    desc: "Dark-charcoal chips for smoky spirits and nightcaps.",
+    price: "$18",
+    tag: "Small batch",
+    color: "linear-gradient(135deg, #1f273d, #9b8cff)",
+  },
+  {
+    name: "Tundra Sticks",
+    desc: "Stir-ready spears designed for highballs and spritzes.",
+    price: "$22",
+    tag: "Bar ready",
+    color: "linear-gradient(135deg, #80ffea, #ffd166)",
+  },
+  {
+    name: "Runic Crest Stamp",
+    desc: "Custom crest pressed into each cube for ceremonial service.",
+    price: "$15",
+    tag: "Custom",
+    color: "linear-gradient(135deg, #ffd166, #ff7eb6)",
+  },
+  {
+    name: "Polar Smoke Capsule",
+    desc: "Aromatics you can freeze into cubes for a drifting fog pour.",
+    price: "$24",
+    tag: "New",
+    color: "linear-gradient(135deg, #7ee8fa, #9b8cff)",
+  },
+];
 
-function updateVisitorCount(){let c=Number(localStorage.getItem('visitCount')||0)+1;localStorage.setItem('visitCount',c);document.getElementById('visitorCount').textContent='You are visitor #'+c;}
-updateVisitorCount();
+const lootTable = [
+  { name: "Prismatic Core", rarity: "Legendary", weight: 2, color: "#ff7eb6" },
+  { name: "Aurora Edge", rarity: "Epic", weight: 6, color: "#9b8cff" },
+  { name: "Glacial Crest", rarity: "Rare", weight: 18, color: "#7ee8fa" },
+  {
+    name: "Frostline Sample",
+    rarity: "Uncommon",
+    weight: 28,
+    color: "#80ffea",
+  },
+  { name: "Carbon Chill", rarity: "Common", weight: 46, color: "#8fa4c3" },
+];
 
-document.getElementById('shareButton').addEventListener('click',async()=>{
-  const data={title:'Bodhi Memorial Shrine',text:'Remembering Bodhi 🐾',url:window.location.href};
-  if(navigator.share){try{await navigator.share(data);}catch(e){console.error(e);}}
-  else{navigator.clipboard.writeText(data.url).then(()=>alert('Link copied to clipboard!'));}
-});
+const rarityWeights = lootTable.reduce((acc, item) => acc + item.weight, 0);
+let displayName = "";
+
+function refreshBannerState() {
+  const bannerText = document.getElementById("bannerText");
+  const bannerForm = document.getElementById("bannerForm");
+  const clearButton = document.getElementById("clearName");
+  const banner = document.getElementById("loginBanner");
+
+  const active = Boolean(displayName);
+  banner.classList.toggle("active", active);
+  bannerForm.classList.toggle("has-name", active);
+  clearButton.style.display = active ? "inline-flex" : "none";
+
+  if (active) {
+    bannerText.innerHTML = `<strong>Session active.</strong> Welcome, ${displayName}. Portal pulls will log to your name.`;
+  } else {
+    bannerText.innerHTML = `<strong>Claim your lab pass.</strong> Save a display name to track pulls and inventory.`;
+  }
+}
+
+function renderProducts() {
+  const grid = document.getElementById("productGrid");
+  grid.innerHTML = products
+    .map(
+      (product) => `
+    <article class="card">
+      <span class="badge" style="background:${product.color}">${product.tag}</span>
+      <h3>${product.name}</h3>
+      <p class="tagline">${product.desc}</p>
+      <div class="price">${product.price}</div>
+    </article>
+  `,
+    )
+    .join("");
+}
+
+function renderRarityMeter() {
+  const bars = document.getElementById("rarityBars");
+  bars.innerHTML = lootTable
+    .map((item) => {
+      const percent = Math.round((item.weight / rarityWeights) * 100);
+      return `
+      <div class="meter-row">
+        <span>${item.rarity}</span>
+        <div class="meter-track">
+          <div class="meter-fill" style="width:${percent}%;background:${item.color}"></div>
+        </div>
+        <div class="percent">${percent}%</div>
+      </div>
+    `;
+    })
+    .join("");
+}
+
+function renderLegend() {
+  const legend = document.getElementById("rarityLegend");
+  legend.innerHTML = lootTable
+    .map(
+      (item) => `
+    <div class="legend-item">
+      <span class="legend-swatch" style="background:${item.color}"></span>
+      <div>
+        <strong>${item.rarity}</strong>
+        <div class="muted">${item.name}</div>
+      </div>
+    </div>
+  `,
+    )
+    .join("");
+}
+
+function updateSessionUI() {
+  const status = document.getElementById("sessionStatus");
+  const pill = displayName ? `Logged in as ${displayName}` : "Guest session";
+  status.textContent = pill;
+  document.getElementById("inventoryStatus").textContent = displayName
+    ? "Live"
+    : "Locked";
+  document.getElementById("historyStatus").textContent = displayName
+    ? displayName
+    : "Guest";
+
+  document
+    .getElementById("inventoryPanel")
+    .classList.toggle("locked", !displayName);
+  document
+    .getElementById("historyPanel")
+    .classList.toggle("locked", !displayName);
+
+  refreshBannerState();
+}
+
+function saveName() {
+  const input = document.getElementById("nameInput");
+  const name = input.value.trim();
+  if (!name) return;
+  displayName = name;
+  localStorage.setItem("displayName", displayName);
+  input.value = "";
+  updateSessionUI();
+  loadInventory();
+  loadHistory();
+  document.getElementById("dropResult").textContent =
+    `Session locked to ${displayName}. Engage portal when ready.`;
+}
+
+function loadName() {
+  displayName = localStorage.getItem("displayName") || "";
+  updateSessionUI();
+  if (displayName) {
+    document.getElementById("dropResult").textContent =
+      `Welcome back, ${displayName}. Engage the portal when ready.`;
+  }
+}
+
+function clearName() {
+  localStorage.removeItem("displayName");
+  displayName = "";
+  updateSessionUI();
+  loadInventory();
+  loadHistory();
+  document.getElementById("dropResult").textContent = "Awaiting input.";
+  document.getElementById("nameInput").focus();
+}
+
+function weightedPull() {
+  const roll = Math.random() * rarityWeights;
+  let cursor = 0;
+  for (const item of lootTable) {
+    cursor += item.weight;
+    if (roll <= cursor) return item;
+  }
+  return lootTable[lootTable.length - 1];
+}
+
+function getInventoryKey() {
+  return displayName ? `inventory_${displayName}` : null;
+}
+
+function loadInventory() {
+  const grid = document.getElementById("inventoryGrid");
+  if (!displayName) {
+    grid.innerHTML = `<div class="muted">Save a display name to track inventory.</div>`;
+    return;
+  }
+  const key = getInventoryKey();
+  const stored = JSON.parse(localStorage.getItem(key) || "{}");
+  grid.innerHTML = lootTable
+    .map((item) => {
+      const count = stored[item.rarity] || 0;
+      return `
+      <div class="inventory-card" style="border-color:${item.color}33">
+        <span>${item.rarity}</span>
+        <div class="muted">${item.name}</div>
+        <strong>${count} pulled</strong>
+      </div>
+    `;
+    })
+    .join("");
+}
+
+function loadHistory() {
+  const list = document.getElementById("historyList");
+  if (!displayName) {
+    list.innerHTML = `<li class="muted">Pull history unlocks after you save a name.</li>`;
+    return;
+  }
+  const history = JSON.parse(
+    localStorage.getItem(`history_${displayName}`) || "[]",
+  );
+  if (!history.length) {
+    list.innerHTML = `<li class="muted">No pulls yet. Engage the portal.</li>`;
+    return;
+  }
+  list.innerHTML = history
+    .slice(-6)
+    .reverse()
+    .map(
+      (entry) => `
+    <li><strong>${entry.item}</strong> · ${entry.rarity} · ${new Date(entry.time).toLocaleString()}</li>
+  `,
+    )
+    .join("");
+}
+
+function savePull(item) {
+  const key = getInventoryKey();
+  if (!key) return;
+  const inv = JSON.parse(localStorage.getItem(key) || "{}");
+  inv[item.rarity] = (inv[item.rarity] || 0) + 1;
+  localStorage.setItem(key, JSON.stringify(inv));
+
+  const historyKey = `history_${displayName}`;
+  const history = JSON.parse(localStorage.getItem(historyKey) || "[]");
+  history.push({ item: item.name, rarity: item.rarity, time: Date.now() });
+  localStorage.setItem(historyKey, JSON.stringify(history.slice(-50)));
+}
+
+function animatePortal() {
+  const ring = document.querySelector(".portal-ring");
+  ring.classList.add("flash");
+  setTimeout(() => ring.classList.remove("flash"), 600);
+}
+
+function engagePortal() {
+  if (!displayName) {
+    document.getElementById("dropResult").textContent =
+      "Save a display name to log your pulls.";
+    document.getElementById("nameInput").focus();
+    return;
+  }
+  animatePortal();
+  const pull = weightedPull();
+  savePull(pull);
+  document.getElementById("dropResult").innerHTML =
+    `<strong>${pull.name}</strong> unlocked · <span style="color:${pull.color}">${pull.rarity}</span>`;
+  loadInventory();
+  loadHistory();
+}
+
+function wireCtas() {
+  document.querySelectorAll("[data-target]").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const target = link.getAttribute("data-target");
+      if (target) {
+        e.preventDefault();
+        const el = document.querySelector(target);
+        el?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  });
+}
+
+function init() {
+  renderProducts();
+  renderRarityMeter();
+  renderLegend();
+  loadName();
+  loadInventory();
+  loadHistory();
+
+  document.getElementById("saveName").addEventListener("click", saveName);
+  document
+    .getElementById("nameInput")
+    .addEventListener("keydown", (e) => e.key === "Enter" && saveName());
+  document.getElementById("clearName").addEventListener("click", clearName);
+  document
+    .getElementById("unboxButton")
+    .addEventListener("click", engagePortal);
+  document.getElementById("labCta").addEventListener("click", (e) => {
+    e.preventDefault();
+    document.getElementById("unboxButton").focus();
+  });
+  wireCtas();
+}
+
+document.addEventListener("DOMContentLoaded", init);

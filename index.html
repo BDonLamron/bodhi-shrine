@@ -1,63 +1,154 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>In Loving Memory of Bodhi 🐾</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body class="theme-serene">
-  <div class="header">
-    <h1>In Loving Memory of Bodhi 🐾</h1>
-    <h2>18/12/24</h2>
-    <button id="themeToggle">🌗 Toggle Theme</button>
-    <button id="muteToggle">🔊 Mute/Unmute Music</button>
-    <button id="fireworksButton">🎇 Launch Fireworks</button>
-    <button id="balloonButton">🎈 Release Balloons</button>
-    <button id="confettiButton">🎊 Throw Confetti</button>
-    <button id="lanternButton">🏮 Light Lanterns</button>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Frostborne Ice Lab</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">❄️ Frostborne Lab</div>
+      <nav class="nav-links">
+        <a href="#hero" class="nav-link">Story</a>
+        <a href="#shop" class="nav-link">Shop</a>
+        <a href="#unboxing" class="nav-link">Frost Lab</a>
+      </nav>
+      <div class="session-pill" id="sessionStatus">Guest session</div>
+    </header>
 
-  <div id="visitorCount"></div>
+    <section class="login-banner" id="loginBanner">
+      <div class="banner-text" id="bannerText">
+        <strong>Claim your lab pass.</strong> Save a display name to track pulls
+        and inventory.
+      </div>
+      <div class="banner-form" id="bannerForm">
+        <input
+          type="text"
+          id="nameInput"
+          placeholder="Display name"
+          aria-label="Display name"
+        />
+        <button id="saveName">Save name</button>
+        <button id="clearName" class="ghost" aria-label="Switch display name">
+          Switch name
+        </button>
+      </div>
+    </section>
 
-  <div id="share">
-    <h3>Share this memorial 💞</h3>
-    <button id="shareButton">Share Link</button>
-  </div>
+    <main>
+      <section id="hero" class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Glacier-crafted | Small batch</p>
+          <h1>Ice forged for storytellers.</h1>
+          <p class="lede">
+            Frostborne captures the character of polar storms—obsidian shards,
+            aurora-lit fractures, and the shimmer of impossible cold. Every cube
+            is tempered for clarity, carved for ritual, and stamped with our
+            crest.
+          </p>
+          <div class="cta-row">
+            <a class="cta primary" data-target="#shop" href="#shop"
+              >Order Signature Ice</a
+            >
+            <a class="cta ghost" data-target="#unboxing" href="#unboxing"
+              >Start Unboxing</a
+            >
+          </div>
+          <ul class="hero-stats">
+            <li><span>72 hr</span> slow freeze</li>
+            <li><span>7x</span> filtered melt</li>
+            <li><span>Carbon-neutral</span> deliveries</li>
+          </ul>
+        </div>
+        <div class="hero-visual">
+          <div class="frost-orb">
+            <div class="frost-core"></div>
+            <div class="halo"></div>
+          </div>
+          <div class="rarity-meter" aria-label="Rarity meter">
+            <div class="meter-label">Drop rate preview</div>
+            <div class="meter-bars" id="rarityBars"></div>
+          </div>
+        </div>
+      </section>
 
-  <div class="centerpiece">
-    <img src="assets/bodhi.png" alt="Bodhi" class="bodhi-img" onclick="angelWings()">
-  </div>
+      <section id="shop" class="section">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Signature collection</p>
+            <h2>Shop the frostline.</h2>
+          </div>
+          <a class="cta link" data-target="#unboxing" href="#unboxing"
+            >Unbox a lab crate →</a
+          >
+        </div>
+        <div id="productGrid" class="product-grid"></div>
+      </section>
 
-  <div id="candles">
-    <h3>Light a Candle 🕯️</h3>
-    <input id="candleName" placeholder="Your name">
-    <button onclick="lightCandle()">🕯️ Light Candle</button>
-    <div id="candleArea"></div>
-  </div>
+      <section id="unboxing" class="section frost-lab">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Frost Lab</p>
+            <h2>Crack open a portal crate.</h2>
+            <p class="lede">
+              Test your luck, unlock variants, and log every pull to your
+              display name.
+            </p>
+          </div>
+          <div class="lab-actions">
+            <a class="cta primary" id="labCta" href="#unboxing"
+              >Start Unboxing</a
+            >
+            <a class="cta ghost" data-target="#shop" href="#shop"
+              >Return to shop</a
+            >
+          </div>
+        </div>
 
-  <div id="gifts">
-    <h3>Leave a Gift 🎁 (Drag onto page)</h3>
-    <button onclick="leaveGift('🌹')">🌹 Rose</button>
-    <button onclick="leaveGift('🦴')">🦴 Bone</button>
-    <button onclick="leaveGift('❤️')">❤️ Heart</button>
-  </div>
+        <div class="lab-grid">
+          <div class="lab-portal">
+            <div class="portal-frame">
+              <div class="portal-core">
+                <div class="portal-ring"></div>
+                <div class="portal-flare"></div>
+              </div>
+              <div class="crate">▢ Frost Crate</div>
+            </div>
+            <button id="unboxButton" class="cta primary wide">
+              Engage Portal
+            </button>
+            <div class="drop-result" id="dropResult">Awaiting input.</div>
+            <div class="legend" id="rarityLegend"></div>
+          </div>
 
-  <div id="guestbook">
-    <h3>Guestbook 📖</h3>
-    <textarea id="messageInput" placeholder="Leave your message..."></textarea>
-    <button onclick="addMessage()">Submit</button>
-    <ul id="messages"></ul>
-  </div>
+          <div class="lab-inventory">
+            <div class="panel" id="inventoryPanel">
+              <div class="panel-header">
+                <div>
+                  <p class="eyebrow">Inventory</p>
+                  <h3>Lab pulls by rarity</h3>
+                </div>
+                <span class="pill" id="inventoryStatus">Locked</span>
+              </div>
+              <div class="inventory-grid" id="inventoryGrid"></div>
+            </div>
 
-  <div id="music">
-    <iframe id="musicFrame" width="0" height="0"
-      src="https://www.youtube.com/embed/gPYODbvQgD4?autoplay=1&loop=1&playlist=gPYODbvQgD4"
-      frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-  </div>
+            <div class="panel" id="historyPanel">
+              <div class="panel-header">
+                <div>
+                  <p class="eyebrow">History</p>
+                  <h3>Latest portal events</h3>
+                </div>
+                <span class="pill ghost" id="historyStatus">Guest</span>
+              </div>
+              <ul class="history" id="historyList"></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
 
-  <canvas id="fireworksCanvas"></canvas>
-
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
