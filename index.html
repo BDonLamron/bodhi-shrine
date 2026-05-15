@@ -6,50 +6,147 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="theme-serene">
-  <div class="header">
+  <!-- Sparkle and Heart Overlays -->
+  <div id="sparkle-overlay"></div>
+  <div id="heart-overlay"></div>
+  <div class="header" style="position:relative;">
+    <!-- Floating Care Bear Mascot -->
+    <div id="carebear-mascot" style="position:absolute;left:10px;top:-40px;z-index:30;font-size:3em;filter:drop-shadow(0 0 16px #fff6);animation:floatBear 4s ease-in-out infinite alternate;user-select:none;">✨<span style="font-size:1.2em;">🧸</span>✨</div>
     <h1>In Loving Memory of Bodhi 🐾</h1>
     <h2>18/12/24</h2>
-    <button id="themeToggle">🌗 Toggle Theme</button>
-    <button id="muteToggle">🔊 Mute/Unmute Music</button>
-    <button id="fireworksButton">🎇 Launch Fireworks</button>
-    <button id="balloonButton">🎈 Release Balloons</button>
-    <button id="confettiButton">🎊 Throw Confetti</button>
-    <button id="lanternButton">🏮 Light Lanterns</button>
+    <button id="themeToggle" title="Switch between light and dark themes">🌗 Toggle Theme</button>
+    <button id="muteToggle" title="Mute or unmute background music">🔊 Mute/Unmute Music</button>
+    <button id="fireworksButton" title="Celebrate with fireworks!">🎇 Launch Fireworks</button>
+    <button id="balloonButton" title="Release balloons in Bodhi's memory">🎈 Release Balloons</button>
+    <button id="confettiButton" title="Throw confetti for joy">🎊 Throw Confetti</button>
+    <button id="lanternButton" title="Light lanterns for remembrance">🏮 Light Lanterns</button>
+    <button id="shareButton" title="Share this memorial page">🔗 Share</button>
+    <button id="gardenButton" title="View Bodhi's Garden">🌳 Garden</button>
   </div>
 
   <div class="centerpiece">
-    <img src="assets/bodhi.png" alt="Bodhi" class="bodhi-img" onclick="angelWings()">
+    <img src="assets/bodhi.png" alt="Bodhi" class="bodhi-img" onclick="angelWings()" style="box-shadow:0 0 60px #ffb6e6,0 0 120px #ffe6fa;">
+    <div style="margin-top:10px;font-size:1.5em;color:#ffb6e6;text-shadow:0 0 8px #fff;">🌸 You are loved, Bodhi! 🌸</div>
   </div>
 
-  <div id="candles">
+  <div id="candles" style="border:2px solid #ffe6fa;box-shadow:0 0 24px #ffb6e6;">
     <h3>Light a Candle 🕯️</h3>
-    <input id="candleName" placeholder="Your name">
-    <button onclick="lightCandle()">🕯️ Light Candle</button>
+    <input id="candleName" placeholder="Your name" aria-label="Your name for the candle">
+    <button onclick="lightCandle()" title="Light a candle in Bodhi's memory">🕯️ Light Candle</button>
+    <button id="clearCandles" title="Remove all candles">🗑️ Clear Candles</button>
     <div id="candleArea"></div>
   </div>
 
-  <div id="gifts">
-    <h3>Leave a Gift 🎁 (Drag onto page)</h3>
-    <button onclick="leaveGift('🌹')">🌹 Rose</button>
-    <button onclick="leaveGift('🦴')">🦴 Bone</button>
-    <button onclick="leaveGift('❤️')">❤️ Heart</button>
+  <div id="gifts" style="border:2px solid #ffe6fa;box-shadow:0 0 24px #ffb6e6;">
+    <h3>Leave a Gift 🎁 (Click to place a gift)</h3>
+    <button onclick="leaveGift('🌹')" title="Leave a rose">🌹 Rose</button>
+    <button onclick="leaveGift('🦴')" title="Leave a bone">🦴 Bone</button>
+    <button onclick="leaveGift('❤️')" title="Leave a heart">❤️ Heart</button>
+    <button id="clearGifts" title="Remove all gifts">🗑️ Clear Gifts</button>
   </div>
 
-  <div id="guestbook">
+  <div id="guestbook" style="border:2px solid #ffe6fa;box-shadow:0 0 24px #ffb6e6;">
     <h3>Guestbook 📖</h3>
-    <textarea id="messageInput" placeholder="Leave your message..."></textarea>
-    <button onclick="addMessage()">Submit</button>
+    <textarea id="messageInput" placeholder="Leave your message..." aria-label="Guestbook message"></textarea>
+    <button onclick="addMessage()" title="Add your message to the guestbook">Submit</button>
+    <button id="clearMessages" title="Clear all guestbook messages">🗑️ Clear Guestbook</button>
     <ul id="messages"></ul>
   </div>
 
-  <div id="music">
+  <div id="music" style="margin-bottom:10px;">
     <iframe id="musicFrame" width="0" height="0"
       src="https://www.youtube.com/embed/gPYODbvQgD4?autoplay=1&loop=1&playlist=gPYODbvQgD4"
-      frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      frameborder="0" allow="autoplay; encrypted-media" allowfullscreen title="Background music"></iframe>
   </div>
 
-  <canvas id="fireworksCanvas"></canvas>
+  <canvas id="fireworksCanvas" aria-label="Fireworks animation"></canvas>
+  <canvas id="audio-visualizer"></canvas>
 
+  <!-- Voxel Garden Modal -->
+  <div id="gardenModal" style="display:none;position:fixed;z-index:200;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;">
+    <div style="position:relative;width:90vw;height:90vh;max-width:900px;max-height:700px;margin:auto;display:flex;align-items:center;justify-content:center;">
+      <button id="closeGarden" style="position:absolute;top:20px;right:30px;z-index:10;font-size:2em;background:none;border:none;color:#fff;cursor:pointer;">✖</button>
+      <div id="garden3d" style="width:100%;height:100%;background:transparent;"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/build/three.min.js"></script>
   <script src="script.js"></script>
+  <script>
+  // Garden Modal logic
+  document.getElementById('gardenButton').onclick = function() {
+    document.getElementById('gardenModal').style.display = 'flex';
+    if (!window.gardenLoaded) {
+      window.gardenLoaded = true;
+      // The 3D scene will be initialized by script.js
+      if (window.initGardenScene) window.initGardenScene();
+    }
+  };
+  document.getElementById('closeGarden').onclick = function() {
+    document.getElementById('gardenModal').style.display = 'none';
+  };
+  // Sparkle and Heart overlays
+  function spawnSparkle() {
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    s.style.left = Math.random()*100 + 'vw';
+    s.style.top = Math.random()*100 + 'vh';
+    document.getElementById('sparkle-overlay').appendChild(s);
+    setTimeout(()=>s.remove(), 4000+Math.random()*2000);
+  }
+  setInterval(spawnSparkle, 400);
+  function spawnHeart() {
+    const h = document.createElement('div');
+    h.className = 'floating-heart';
+    h.style.left = Math.random()*100 + 'vw';
+    h.style.top = (80+Math.random()*10) + 'vh';
+    h.innerHTML = ['💖','💕','💗','💓','💞','💝'][Math.floor(Math.random()*6)];
+    document.getElementById('heart-overlay').appendChild(h);
+    setTimeout(()=>h.remove(), 6000+Math.random()*2000);
+  }
+  setInterval(spawnHeart, 1200);
+  </script>
+  <noscript>
+    <div style="color: #ff69b4; background: #fff0f5; padding: 1em; margin: 2em auto; width: 60%; border-radius: 16px; border:2px solid #ffe6fa; box-shadow:0 0 24px #ffb6e6;">
+      This site is best experienced with JavaScript enabled. Some features may not work without it.<br>
+      <span style="font-size:2em;">(｡♥‿♥｡)</span>
+    </div>
+  </noscript>
+  <style>
+    body {
+      background: linear-gradient(135deg, #ffe6fa 0%, #ffb6e6 50%, #b6e6ff 100%) !important;
+    }
+    #sparkle-overlay, #heart-overlay {
+      pointer-events:none; position:fixed; left:0; top:0; width:100vw; height:100vh; z-index:100;
+    }
+    .sparkle {
+      position:absolute; width:18px; height:18px; background:radial-gradient(circle,#fff 60%,#ffb6e6 100%);
+      border-radius:50%; opacity:0.7; filter:blur(1px) drop-shadow(0 0 8px #fff6);
+      animation:sparkle-float 4s linear forwards;
+    }
+    @keyframes sparkle-float {
+      0%{transform:scale(0.7) translateY(0);opacity:0.7;}
+      80%{transform:scale(1.2) translateY(-40px);opacity:1;}
+      100%{transform:scale(0.7) translateY(-60px);opacity:0;}
+    }
+    .floating-heart {
+      position:absolute; font-size:2.2em; opacity:0.8; filter:drop-shadow(0 0 8px #ffb6e6);
+      animation:heart-float 6s linear forwards;
+    }
+    @keyframes heart-float {
+      0%{transform:scale(0.8) translateY(0);opacity:0.8;}
+      80%{transform:scale(1.2) translateY(-60px);opacity:1;}
+      100%{transform:scale(0.7) translateY(-120px);opacity:0;}
+    }
+    #carebear-mascot {
+      animation:floatBear 4s ease-in-out infinite alternate;
+      filter:drop-shadow(0 0 16px #fff6);
+      user-select:none;
+    }
+    @keyframes floatBear {
+      0%{transform:translateY(0);}
+      100%{transform:translateY(18px);}
+    }
+  </style>
 </body>
 </html>
